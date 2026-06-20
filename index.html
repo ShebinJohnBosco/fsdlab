@@ -16,79 +16,192 @@ body{
 html{
     scroll-behavior:smooth;
 }
+@keyframes slowZoom{
+    0%{transform:scale(1)}
+    50%{transform:scale(1.08)}
+    100%{transform:scale(1)}
+}
+#home>div:first-child{
+    animation:slowZoom 20s ease infinite;
+}
+
+/* Navbar */
+nav{
+    transition:background 0.4s ease,box-shadow 0.4s ease;
+}
+nav.scrolled{
+    background:rgba(0,0,0,0.85) !important;
+    box-shadow:0 4px 30px rgba(0,0,0,0.3);
+    border-bottom-color:rgba(255,255,255,0.2);
+}
+
+/* Nav shine overlay */
+nav::before{
+    content:"";
+    position:absolute;
+    top:-50%;
+    left:-50%;
+    width:200%;
+    height:200%;
+    background:linear-gradient(45deg,transparent 40%,rgba(255,255,255,0.03) 50%,transparent 60%);
+    animation:shine 6s ease infinite;
+    pointer-events:none;
+}
+@keyframes shine{
+    0%{transform:translateX(-100%) translateY(-100%)}
+    100%{transform:translateX(100%) translateY(100%)}
+}
+
+/* Nav links with animated underline */
+nav a:not([href*="maintenance"]){
+    position:relative;
+    font-weight:500;
+    letter-spacing:0.3px;
+}
+nav a:not([href*="maintenance"])::after{
+    content:"";
+    position:absolute;
+    bottom:-2px;
+    left:0;
+    width:0;
+    height:2px;
+    background:linear-gradient(90deg,#6ee7b7,#34d399);
+    transition:width 0.3s ease;
+    border-radius:2px;
+}
+nav a:not([href*="maintenance"]):hover::after{
+    width:100%;
+}
+
+/* Nav entrance animation */
+nav>div:first-of-type{
+    animation:navSlide 0.8s ease forwards;
+}
+@keyframes navSlide{
+    from{transform:translateY(-100%);opacity:0}
+    to{transform:translateY(0);opacity:1}
+}
+
+/* Hamburger menu */
+#menuBtn{
+    transition:transform 0.3s ease;
+}
+#menuBtn:hover{
+    transform:rotate(90deg);
+}
+
+/* Mobile menu animation */
+#mobileMenu{
+    transition:all 0.4s ease;
+    max-height:0;
+    overflow:hidden;
+    padding-top:0;
+    padding-bottom:0;
+}
+#mobileMenu:not(.hidden){
+    max-height:300px;
+    padding-top:1rem;
+    padding-bottom:1rem;
+}
 </style>
 </head>
 
 <body class="bg-gray-50">
 
-<!-- Navbar -->
-<nav class="bg-green-600 text-white sticky top-0 z-50 shadow-lg">
+<header>
+<nav class="bg-black/80 backdrop-blur-md text-white sticky top-0 z-50 border-b border-white/10">
 <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
 
-<h1 class="text-3xl font-bold">🍽️ Meal Mate</h1>
+<div class="flex items-center gap-3">
+<div class="w-9 h-9 rounded-lg bg-gradient-to-br from-green-400 to-emerald-600 flex items-center justify-center text-white text-lg shadow-lg shadow-green-500/30">M</div>
+<h1 class="text-2xl font-bold text-white tracking-tight">Meal<span class="text-green-400">Mate</span></h1>
+</div>
+
+<button id="menuBtn" class="md:hidden text-3xl">
+☰
+</button>
+
 
 <div class="hidden md:flex items-center gap-8">
-<a href="#home" class="hover:text-green-200">Home</a>
-<a href="#features" class="hover:text-green-200">Features</a>
-<a href="#about" class="hover:text-green-200">About</a>
-<a href="#booking" class="hover:text-green-200">Booking</a>
-<a href="#contact" class="hover:text-green-200">Contact</a>
+<a href="#home" class="text-white/80 hover:text-white transition-all">Home</a>
+<a href="#features" class="text-white/80 hover:text-white transition-all">Features</a>
+<a href="#about" class="text-white/80 hover:text-white transition-all">About</a>
+<a href="#booking" class="text-white/80 hover:text-white transition-all">Booking</a>
+<a href="#contact" class="text-white/80 hover:text-white transition-all">Contact</a>
 
 <a href="maintenance.html">
-<button class="bg-white text-green-600 px-5 py-2 rounded-lg font-semibold">
+<button class="bg-gradient-to-r from-green-500 to-emerald-600 text-white px-5 py-2 rounded-lg font-semibold shadow-lg shadow-green-500/20 hover:shadow-green-500/40 hover:scale-105">
 Login
 </button>
 </a>
 </div>
 
 </div>
+
+<!-- Mobile Menu -->
+<div id="mobileMenu" class="hidden md:hidden bg-black/60 backdrop-blur-md px-6 pb-4 space-y-2">
+<a href="#home" class="block text-white/80 hover:text-white py-2">Home</a>
+<a href="#features" class="block text-white/80 hover:text-white py-2">Features</a>
+<a href="#booking" class="block text-white/80 hover:text-white py-2">Booking</a>
+</div>
 </nav>
+</header>
+
+<main>
 
 <!-- Hero -->
-<section id="home" class="bg-gradient-to-br from-green-50 to-emerald-100 py-20">
+<section id="home" class="relative min-h-screen flex items-center overflow-hidden">
 
-<div class="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-12 items-center">
+<div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1920&q=80')] bg-cover bg-center bg-fixed"></div>
+
+<div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/70 to-black/50"></div>
+
+<div class="relative z-10 max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-12 items-center">
 
 <div>
 
-<span class="bg-green-100 text-green-700 px-4 py-2 rounded-full text-sm font-medium">
-Smart Mess Booking System
+<span class="inline-block bg-black/30 text-white px-5 py-2 rounded-full text-sm font-medium border border-white/20">
+✨ Smart Mess Booking System
 </span>
 
-<h2 class="text-5xl md:text-6xl font-extrabold mt-6 leading-tight">
+<h2 class="text-5xl md:text-7xl font-extrabold mt-6 leading-tight text-white">
 Delicious Meals,
-<span class="text-green-600">Hassle-Free Booking</span>
+<span class="text-transparent bg-clip-text bg-gradient-to-r from-green-300 to-emerald-400">Hassle-Free Booking</span>
 </h2>
 
-<p class="mt-6 text-lg text-gray-600">
+<p class="mt-6 text-lg text-gray-300 leading-relaxed">
 Meal Mate helps restaurants, cafeterias, and mess facilities manage reservations efficiently, reduce food waste, and improve customer satisfaction.
 </p>
 
-<div class="mt-8 flex gap-4 flex-wrap">
-<a href="#booking" class="bg-green-600 text-white px-8 py-3 rounded-xl font-semibold hover:bg-green-700">
+<div class="mt-10 flex gap-4 flex-wrap">
+<a href="#booking" class="bg-gradient-to-r from-green-500 to-emerald-600 text-white px-10 py-4 rounded-xl font-semibold shadow-lg shadow-green-500/30 hover:shadow-green-500/50 hover:scale-105">
 Book a Meal
 </a>
 
-<a href="#about" class="border-2 border-green-600 text-green-600 px-8 py-3 rounded-xl font-semibold hover:bg-green-600 hover:text-white">
+<a href="#about" class="border-2 border-white/30 text-white px-10 py-4 rounded-xl font-semibold hover:bg-white/10 hover:scale-105">
 Learn More
 </a>
 </div>
 
 </div>
 
-<div class="grid grid-cols-2 gap-4">
+<div class="relative grid grid-cols-2 gap-4">
+
+<div class="space-y-4">
+<img src="https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?auto=format&fit=crop&w=600&q=80"
+class="rounded-2xl shadow-2xl h-72 w-full object-cover border-2 border-white/10 hover:scale-105 hover:rotate-1">
+
+<img src="https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?auto=format&fit=crop&w=600&q=80"
+class="rounded-2xl shadow-2xl h-48 w-full object-cover border-2 border-white/10 hover:scale-105 hover:-rotate-1">
+</div>
+
+<div class="space-y-4 mt-8">
+<img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=600&q=80"
+class="rounded-2xl shadow-2xl h-48 w-full object-cover border-2 border-white/10 hover:scale-105 hover:rotate-1">
 
 <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=600&q=80"
-class="rounded-3xl shadow-xl h-72 w-full object-cover">
-
-<img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=600&q=80"
-class="rounded-3xl shadow-xl h-56 w-full object-cover mt-12">
-
-<img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&w=600&q=80"
-class="rounded-3xl shadow-xl h-56 w-full object-cover">
-
-<img src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=600&q=80"
-class="rounded-3xl shadow-xl h-72 w-full object-cover">
+class="rounded-2xl shadow-2xl h-72 w-full object-cover border-2 border-white/10 hover:scale-105 hover:-rotate-1">
+</div>
 
 </div>
 
@@ -97,32 +210,35 @@ class="rounded-3xl shadow-xl h-72 w-full object-cover">
 </section>
 
 <!-- Features -->
-<section id="features" class="py-20 bg-gray-50">
+<section id="features" class="py-24 bg-[#0f0f13]">
 
 <div class="max-w-7xl mx-auto px-6">
 
-<h2 class="text-4xl font-bold text-center mb-12">
+<h2 class="text-4xl font-bold text-center mb-4 text-white">
 Key Features
 </h2>
+<p class="text-gray-400 text-center mb-16 max-w-xl mx-auto">
+Everything you need to manage your dining experience seamlessly
+</p>
 
 <div class="grid md:grid-cols-3 gap-8">
 
-<div class="bg-white p-8 rounded-2xl shadow-lg">
-<div class="text-5xl">📅</div>
-<h3 class="text-2xl font-bold my-3">Advance Booking</h3>
-<p>Reserve meals before arrival and avoid queues.</p>
+<div class="group bg-white/5 backdrop-blur-sm p-8 rounded-2xl border border-white/10 hover:border-green-500/30 hover:bg-white/[0.08] transition-all duration-500">
+<div class="w-14 h-14 rounded-xl bg-gradient-to-br from-green-400/20 to-emerald-600/20 flex items-center justify-center text-2xl group-hover:scale-110 transition-transform duration-500">📅</div>
+<h3 class="text-2xl font-bold my-4 text-white group-hover:text-green-400 transition-colors">Advance Booking</h3>
+<p class="text-gray-400 leading-relaxed">Reserve meals before arrival and avoid queues. Plan your dining experience with just a few clicks.</p>
 </div>
 
-<div class="bg-white p-8 rounded-2xl shadow-lg">
-<div class="text-5xl">📊</div>
-<h3 class="text-2xl font-bold my-3">Smart Analytics</h3>
-<p>Track reservations and optimize food preparation.</p>
+<div class="group bg-white/5 backdrop-blur-sm p-8 rounded-2xl border border-white/10 hover:border-green-500/30 hover:bg-white/[0.08] transition-all duration-500">
+<div class="w-14 h-14 rounded-xl bg-gradient-to-br from-green-400/20 to-emerald-600/20 flex items-center justify-center text-2xl group-hover:scale-110 transition-transform duration-500">📊</div>
+<h3 class="text-2xl font-bold my-4 text-white group-hover:text-green-400 transition-colors">Smart Analytics</h3>
+<p class="text-gray-400 leading-relaxed">Track reservations and optimize food preparation. Data-driven insights to reduce waste.</p>
 </div>
 
-<div class="bg-white p-8 rounded-2xl shadow-lg">
-<div class="text-5xl">💳</div>
-<h3 class="text-2xl font-bold my-3">Online Payments</h3>
-<p>Secure digital payments with instant confirmation.</p>
+<div class="group bg-white/5 backdrop-blur-sm p-8 rounded-2xl border border-white/10 hover:border-green-500/30 hover:bg-white/[0.08] transition-all duration-500">
+<div class="w-14 h-14 rounded-xl bg-gradient-to-br from-green-400/20 to-emerald-600/20 flex items-center justify-center text-2xl group-hover:scale-110 transition-transform duration-500">💳</div>
+<h3 class="text-2xl font-bold my-4 text-white group-hover:text-green-400 transition-colors">Online Payments</h3>
+<p class="text-gray-400 leading-relaxed">Secure digital payments with instant confirmation. Fast, safe, and hassle-free transactions.</p>
 </div>
 
 </div>
@@ -132,67 +248,101 @@ Key Features
 </section>
 
 <!-- About -->
-<section id="about" class="py-20">
+<section id="about" class="py-24 bg-[#0a0a0e]">
 
 <div class="max-w-5xl mx-auto px-6 text-center">
 
-<h2 class="text-4xl font-bold mb-6">
-About Meal Mate
+<div class="inline-block bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-12 md:p-16">
+<h2 class="text-4xl font-bold mb-6 text-white">
+About <span class="text-transparent bg-clip-text bg-gradient-to-r from-green-300 to-emerald-400">Meal Mate</span>
 </h2>
 
-<p class="text-lg text-gray-600 leading-8">
-Meal Mate is a web-based application that streamlines meal reservations and dining management for restaurants, cafeterias, and mess facilities.
+<p class="text-lg text-gray-400 leading-relaxed max-w-2xl mx-auto">
+Meal Mate is a web-based application that streamlines meal reservations and dining management for restaurants, cafeterias, and mess facilities. We make dining effortless — from booking to payment.
 </p>
+
+<div class="mt-8 flex justify-center gap-8 flex-wrap">
+<div class="text-center">
+<div class="text-3xl font-bold text-white">10K+</div>
+<div class="text-sm text-gray-500 mt-1">Meals Booked</div>
+</div>
+<div class="text-center">
+<div class="text-3xl font-bold text-white">500+</div>
+<div class="text-sm text-gray-500 mt-1">Happy Clients</div>
+</div>
+<div class="text-center">
+<div class="text-3xl font-bold text-white">98%</div>
+<div class="text-sm text-gray-500 mt-1">Satisfaction</div>
+</div>
+</div>
+</div>
 
 </div>
 
 </section>
 
 <!-- Booking Section -->
-<section id="booking" class="py-20 bg-green-600 text-white">
+<section id="booking" class="py-24 bg-[#0f0f13]">
 
 <div class="max-w-4xl mx-auto px-6">
 
-<h2 class="text-4xl font-bold text-center mb-10">
+<h2 class="text-4xl font-bold text-center mb-4 text-white">
 Book Your Meal
 </h2>
+<p class="text-gray-400 text-center mb-10">
+Fill in the details and we'll handle the rest
+</p>
+
+<div class="w-full bg-white/10 h-2 rounded-full overflow-hidden">
+<div id="progressBar"
+class="h-full bg-gradient-to-r from-green-400 to-emerald-500 rounded-full transition-all duration-500"
+style="width:0%">
+</div>
+</div>
 
 <form id="bookingForm"
-class="bg-white text-gray-800 p-8 rounded-3xl shadow-xl">
+class="mt-8 bg-white/5 backdrop-blur-sm border border-white/10 text-gray-200 p-8 rounded-3xl shadow-xl">
 
 <div class="grid md:grid-cols-2 gap-6">
 
 <input type="text" id="name"
 placeholder="Full Name"
 required
-class="border p-3 rounded-lg">
+class="bg-white/5 border border-white/10 p-3 rounded-lg text-white placeholder-gray-500 focus:border-green-500 focus:ring-2 focus:ring-green-500/20">
 
 <input type="email" id="email"
 placeholder="Email Address"
 required
-class="border p-3 rounded-lg">
+class="bg-white/5 border border-white/10 p-3 rounded-lg text-white placeholder-gray-500 focus:border-green-500 focus:ring-2 focus:ring-green-500/20">
 
-<input type="tel"
+<input
+id="phone"
+type="tel"
 placeholder="Phone Number"
 required
-class="border p-3 rounded-lg">
+class="bg-white/5 border border-white/10 p-3 rounded-lg text-white placeholder-gray-500 focus:border-green-500 focus:ring-2 focus:ring-green-500/20">
 
 <select id="meal"
-class="border p-3 rounded-lg">
-<option>Breakfast</option>
-<option>Lunch</option>
-<option>Dinner</option>
+class="bg-white/5 border border-white/10 p-3 rounded-lg text-white focus:border-green-500 focus:ring-2 focus:ring-green-500/20">
+<option class="bg-gray-900">Breakfast</option>
+<option class="bg-gray-900">Lunch</option>
+<option class="bg-gray-900">Dinner</option>
 </select>
+
+<p id="mealPrice"
+class="font-semibold mt-3 text-green-400">
+Price: ₹100
+</p>
 
 <input type="date"
 required
-class="border p-3 rounded-lg">
+class="bg-white/5 border border-white/10 p-3 rounded-lg text-white [color-scheme:dark] focus:border-green-500 focus:ring-2 focus:ring-green-500/20">
 
 <input type="number"
 placeholder="Number of Persons"
 required
 min="1"
-class="border p-3 rounded-lg">
+class="bg-white/5 border border-white/10 p-3 rounded-lg text-white placeholder-gray-500 focus:border-green-500 focus:ring-2 focus:ring-green-500/20">
 
 </div>
 
@@ -201,42 +351,42 @@ class="border p-3 rounded-lg">
 
 <button type="button"
 onclick="getLocation()"
-class="bg-blue-500 text-white px-4 py-2 rounded-lg">
+class="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-5 py-2.5 rounded-lg font-medium shadow-lg shadow-blue-500/20 hover:shadow-blue-500/40 hover:scale-105 transition-all">
 
-Detect My Location
+📍 Detect My Location
 
 </button>
 
-<p id="location" class="mt-3"></p>
+<p id="location" class="mt-3 text-gray-400 text-sm"></p>
 
 </div>
 
 <!-- File API -->
 <div class="mt-6">
 
-<label class="font-semibold">
+<label class="font-medium text-gray-300">
 Upload Student ID / Profile Image
 </label>
 
 <input type="file"
 id="studentFile"
 accept="image/*"
-class="border p-3 rounded-lg w-full mt-2">
+class="bg-white/5 border border-white/10 p-3 rounded-lg w-full mt-2 text-gray-300 file:bg-gradient-to-r file:from-green-500 file:to-emerald-600 file:text-white file:border-0 file:px-4 file:py-2 file:rounded-lg file:cursor-pointer file:font-medium">
 
 <img id="preview"
-class="hidden mt-4 rounded-lg max-w-xs">
+class="hidden mt-4 rounded-lg max-w-xs border border-white/10">
 
 </div>
 
 <textarea rows="4"
 placeholder="Special Requests"
-class="border p-3 rounded-lg w-full mt-6">
+class="bg-white/5 border border-white/10 p-3 rounded-lg w-full mt-6 text-white placeholder-gray-500 focus:border-green-500 focus:ring-2 focus:ring-green-500/20">
 </textarea>
 
 <div class="text-center mt-8">
 
 <button type="submit"
-class="bg-green-600 text-white px-8 py-3 rounded-xl font-semibold">
+class="bg-gradient-to-r from-green-500 to-emerald-600 text-white px-10 py-3.5 rounded-xl font-semibold shadow-lg shadow-green-500/20 hover:shadow-green-500/40 hover:scale-105 transition-all">
 
 Confirm Booking
 
@@ -245,28 +395,32 @@ Confirm Booking
 </div>
 
 <div id="successMsg"
-class="hidden bg-green-100 text-green-700 p-4 rounded-lg mt-6 text-center">
+class="hidden bg-green-500/10 border border-green-500/30 text-green-400 p-4 rounded-lg mt-6 text-center">
 </div>
 
 <div id="bookingContainer"
 class="hidden text-center mt-6">
 
-<p class="font-semibold">
+<p class="font-medium text-gray-400">
 Booking ID
 </p>
 
 <p id="bookingId"
-class="text-xl font-bold text-green-600">
+class="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-green-300 to-emerald-400">
 </p>
 
 <button type="button"
 onclick="copyBookingID()"
-class="mt-3 bg-purple-500 text-white px-4 py-2 rounded-lg">
+class="mt-3 bg-gradient-to-r from-purple-500 to-purple-600 text-white px-5 py-2.5 rounded-lg font-medium shadow-lg shadow-purple-500/20 hover:shadow-purple-500/40 hover:scale-105 transition-all">
 
-Copy Booking ID
+📋 Copy Booking ID
 
 </button>
 
+</div>
+
+<div id="summaryCard"
+class="hidden mt-6 bg-white/5 backdrop-blur-sm border border-white/10 p-5 rounded-lg text-gray-300">
 </div>
 
 </form>
@@ -275,22 +429,59 @@ Copy Booking ID
 
 </section>
 
+</main>
+
 <!-- Footer -->
-<footer id="contact" class="bg-black text-gray-300 py-10">
+<footer id="contact" class="bg-[#08080b] text-gray-400 py-16 border-t border-white/5">
 
-<div class="max-w-7xl mx-auto px-6 text-center">
+<div class="max-w-7xl mx-auto px-6">
 
-<h3 class="text-2xl font-bold text-white mb-4">
-Meal Mate
-</h3>
+<div class="grid md:grid-cols-4 gap-10 text-left">
 
-<p>
+<div>
+<div class="flex items-center gap-3 mb-4">
+<div class="w-8 h-8 rounded-lg bg-gradient-to-br from-green-400 to-emerald-600 flex items-center justify-center text-white text-sm font-bold shadow-lg shadow-green-500/30">M</div>
+<h3 class="text-xl font-bold text-white">MealMate</h3>
+</div>
+<p class="text-sm leading-relaxed">
 Smart Mess Booking & Restaurant Management System
 </p>
+</div>
 
-<hr class="my-6 border-gray-700">
+<div>
+<h4 class="text-white font-semibold mb-4">Quick Links</h4>
+<div class="space-y-2 text-sm">
+<a href="#home" class="block hover:text-green-400 transition-colors">Home</a>
+<a href="#features" class="block hover:text-green-400 transition-colors">Features</a>
+<a href="#about" class="block hover:text-green-400 transition-colors">About</a>
+<a href="#booking" class="block hover:text-green-400 transition-colors">Booking</a>
+</div>
+</div>
 
-<p>
+<div>
+<h4 class="text-white font-semibold mb-4">Support</h4>
+<div class="space-y-2 text-sm">
+<a href="#" class="block hover:text-green-400 transition-colors">FAQ</a>
+<a href="#" class="block hover:text-green-400 transition-colors">Privacy Policy</a>
+<a href="#" class="block hover:text-green-400 transition-colors">Terms of Service</a>
+<a href="#" class="block hover:text-green-400 transition-colors">Contact Us</a>
+</div>
+</div>
+
+<div>
+<h4 class="text-white font-semibold mb-4">Contact</h4>
+<div class="space-y-2 text-sm">
+<p>📧 mealmate@gmail.com</p>
+<p>📞 +91 9810284921</p>
+<p>📍 Banglore, Karnataka</p>
+</div>
+</div>
+
+</div>
+
+<hr class="my-10 border-white/5">
+
+<p class="text-center text-sm">
 © 2026 Meal Mate. All Rights Reserved.
 </p>
 
@@ -299,6 +490,75 @@ Smart Mess Booking & Restaurant Management System
 </footer>
 
 <script>
+
+/* Scroll Nav */
+window.addEventListener("scroll",()=>{
+const nav = document.querySelector("nav");
+if(window.scrollY > 50){
+nav.classList.add("scrolled");
+}
+else{
+nav.classList.remove("scrolled");
+}
+});
+
+const mealPrices = {
+
+Breakfast:100,
+Lunch:150,
+Dinner:200
+
+};
+
+document.getElementById("meal")
+.addEventListener("change",function(){
+
+document.getElementById("mealPrice")
+.innerText =
+"Price: ₹" +
+mealPrices[this.value];
+
+});
+
+
+/* Progress Bar */
+const inputs =
+document.querySelectorAll(
+"#bookingForm input, #bookingForm select"
+);
+
+inputs.forEach(input=>{
+
+input.addEventListener("input",()=>{
+
+let filled = 0;
+
+inputs.forEach(i=>{
+
+if(i.value) filled++;
+
+});
+
+const progress =
+(filled/inputs.length)*100;
+
+document.getElementById(
+"progressBar"
+).style.width =
+progress + "%";
+
+});
+
+});
+
+/* Mobile Menu Toggle */
+document.getElementById("menuBtn")
+.addEventListener("click",()=>{
+
+document.getElementById("mobileMenu")
+.classList.toggle("hidden");
+
+});
 
 /* Geolocation API */
 function getLocation(){
@@ -352,6 +612,32 @@ document.getElementById("bookingForm")
 
 e.preventDefault();
 
+const email =
+document.getElementById("email").value;
+
+const pattern =
+/^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+if(!pattern.test(email)){
+
+alert("Enter valid email");
+return;
+
+}
+
+const phone =
+document.getElementById("phone").value;
+
+if(phone.length !== 10){
+
+alert(
+"Phone number must contain 10 digits"
+);
+
+return;
+
+}
+
 const bookingID =
 "MM" + Date.now();
 
@@ -390,6 +676,22 @@ document.getElementById("bookingContainer")
 
 document.getElementById("bookingId")
 .innerText = bookingID;
+
+/* Summary Card */
+document.getElementById("summaryCard")
+.classList.remove("hidden");
+
+document.getElementById("summaryCard")
+.innerHTML = `
+<h3 class="font-bold text-xl mb-2">
+Booking Summary
+</h3>
+
+<p>Name: ${booking.name}</p>
+<p>Email: ${booking.email}</p>
+<p>Meal: ${booking.meal}</p>
+<p>ID: ${booking.id}</p>
+`;
 
 /* Notification API */
 showNotification();
@@ -452,6 +754,26 @@ alert(
 "Booking ID Copied: " +
 bookingID
 );
+
+}
+
+window.onload = ()=>{
+
+const oldBooking =
+JSON.parse(
+localStorage.getItem("MealMateBooking")
+);
+
+if(oldBooking){
+
+document.getElementById("successMsg")
+.classList.remove("hidden");
+
+document.getElementById("successMsg")
+.innerHTML =
+"Previous Booking Found";
+
+}
 
 }
 
