@@ -740,6 +740,51 @@ body:
 
 }
 
+/* contextmenu - custom right-click on booking cards */
+document.querySelectorAll("#features .group").forEach(card => {
+  card.addEventListener("contextmenu", function (e) {
+    e.preventDefault();
+    const name = this.querySelector("h3").innerText;
+    alert(`🔍 You right-clicked on "${name}". Try booking this feature!`);
+  });
+});
+
+/* dblclick - double-click logo to toggle greeting */
+document.querySelector("nav h1").addEventListener("dblclick", function () {
+  alert("🍽️ Welcome to Meal Mate! Enjoy your meal!");
+});
+
+/* keyup - live phone validation as user types */
+document.getElementById("phone").addEventListener("keyup", function () {
+  const msg = document.getElementById("phoneMsg") || (() => {
+    const el = document.createElement("p");
+    el.id = "phoneMsg";
+    el.className = "text-sm mt-1";
+    this.parentNode.appendChild(el);
+    return el;
+  })();
+  const val = this.value.replace(/\D/g, "");
+  if (val.length === 0) {
+    msg.textContent = "";
+  } else if (val.length === 10) {
+    msg.textContent = "✅ Valid number";
+    msg.className = "text-sm mt-1 text-green-400";
+  } else {
+    msg.textContent = "⚠️ Must be 10 digits";
+    msg.className = "text-sm mt-1 text-yellow-400";
+  }
+});
+
+/* focus - highlight the active input with a border glow */
+document.querySelectorAll("#bookingForm input, #bookingForm select, #bookingForm textarea").forEach(el => {
+  el.addEventListener("focus", function () {
+    this.style.boxShadow = "0 0 0 3px rgba(52,211,153,0.3)";
+  });
+  el.addEventListener("blur", function () {
+    this.style.boxShadow = "none";
+  });
+});
+
 /* Clipboard API */
 
 function copyBookingID(){
